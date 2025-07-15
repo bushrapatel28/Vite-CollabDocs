@@ -11,6 +11,7 @@ export default defineConfig({
       : process.env.VITE_BASE_PATH || "/",
   optimizeDeps: {
     entries: ["src/main.tsx", "src/tempobook/**/*"],
+    force: true,
   },
   plugins: [react(), tempo()],
   resolve: {
@@ -20,10 +21,23 @@ export default defineConfig({
     },
   },
   server: {
-    host: true,
+    host: "0.0.0.0",
     port: 5173,
-    strictPort: false,
+    strictPort: true,
+    hmr: {
+      port: 5173,
+    },
     // @ts-ignore
     allowedHosts: process.env.TEMPO === "true" ? true : undefined,
+  },
+  build: {
+    rollupOptions: {
+      onwarn(warning, warn) {
+        if (warning.code === "MODULE_LEVEL_DIRECTIVE") {
+          return;
+        }
+        warn(warning);
+      },
+    },
   },
 });
