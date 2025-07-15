@@ -5,11 +5,22 @@ import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 
 import { TempoDevtools } from "tempo-devtools";
-TempoDevtools.init();
+
+// Initialize Tempo devtools with error handling
+try {
+  TempoDevtools.init();
+} catch (error) {
+  console.warn("Failed to initialize Tempo devtools:", error);
+}
 
 const basename = import.meta.env.BASE_URL;
+const rootElement = document.getElementById("root");
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
     <BrowserRouter basename={basename}>
       <App />

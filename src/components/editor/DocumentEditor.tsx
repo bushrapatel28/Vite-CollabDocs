@@ -10,7 +10,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import FormattingToolbar from "./FormattingToolbar";
-import { User, FileText, History, Save } from "lucide-react";
+import ShareDialog from "../share/ShareDialog";
+import { User, FileText, History, Save, Share2 } from "lucide-react";
 
 interface DocumentEditorProps {
   documentId?: string;
@@ -54,6 +55,7 @@ const DocumentEditor = ({
   const [content, setContent] = useState(initialContent);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
   // Simulate saving the document
   const saveDocument = () => {
@@ -147,6 +149,19 @@ const DocumentEditor = ({
             <Save className="h-4 w-4 mr-1" />
             {isSaving ? "Saving..." : "Save"}
           </Button>
+
+          <ShareDialog
+            documentId={documentId}
+            documentTitle="Untitled Document"
+            documentDescription="A collaborative document with real-time editing capabilities"
+            isOpen={shareDialogOpen}
+            onOpenChange={setShareDialogOpen}
+          >
+            <Button variant="default" size="sm">
+              <Share2 className="h-4 w-4 mr-1" />
+              Share
+            </Button>
+          </ShareDialog>
         </div>
       </div>
 
